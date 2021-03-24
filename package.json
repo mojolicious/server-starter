@@ -1,0 +1,35 @@
+{
+  "name": "@mojolicious/server-starter",
+  "version": "1.0.0",
+  "description": "A superdaemon capable of assigning random ports",
+  "keywords": [
+    "superdaemon",
+    "tcp"
+  ],
+  "author": "Sebastian Riedel <kraih@mojolicious.org>",
+  "license": "Artistic-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojolicious/server-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mojolicious/server-starter/issues"
+  },
+  "homepage": "https://github.com/mojolicious/server-starter",
+  "scripts": {
+    "lint": "eslint \"lib/*.js\" \"tests/*.js\"",
+    "test": "tap --no-coverage tests",
+    "test-cov": "tap tests"
+  },
+  "main": "./lib/server-starter.js",
+  "devDependencies": {
+    "diff": "^5.0.0",
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
+    "standard": "^16.0.3",
+    "tap": "^14.11.0"
+  },
+  "engines": {
+    "node": ">= 12"
+  }
+}
