@@ -45,7 +45,7 @@ const fetch = require('node-fetch')
   [Mojolicious](https://mojolicious.org) web applications written in Perl with [Playwright](https://playwright.dev).
 
 ```js
-const starter = require('@mojolicious/server-stayyrter')
+const starter = require('@mojolicious/server-starter')
 const t = require('tap')
 const { chromium } = require('playwright')
 
