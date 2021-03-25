@@ -1,5 +1,5 @@
 /*!
- * @mojolicious/server-starter
+ * server-starter
  * Copyright(c) 2021 Sebastian Riedel
  * Artistic-2.0 Licensed
  */

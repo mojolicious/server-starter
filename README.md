@@ -1,13 +1,16 @@
-# @mojolicious/server-starter [![](https://github.com/mojolicious/server-starter/workflows/test/badge.svg)](https://github.com/mojolicious/server-starter/actions)
+# server-starter [![](https://github.com/mojolicious/server-starter/workflows/test/badge.svg)](https://github.com/mojolicious/server-starter/actions)
 
-  [server-starter](https://github.com/mojolicious/server-starter) is a superdaemon with support for socket activation.
+  UNIX superdaemon with support for socket activation.
 
 ## Description
 
-  The primary use case for this module is socket activation for web applications running in separate processes on UNIX.
-  It is capable of assigning random ports to avoid race conditions when there are many tests running in parallel on the
-  same machine. The superdaemon will create the listen socket and pass it to the managed process as `fd3`, similar to
-  how `systemd` handles socket activation.
+  This module exists to handle socket activation for TCP servers running in separate processes on UNIX. It is capable of
+  assigning random ports to avoid race conditions when there are many services running in parallel on the same machine.
+  As is common with large scale testing.
+  
+  The superdaemon will create the listen socket and pass it to the managed process as `fd3`, similar to how `systemd`
+  handles socket activation. This also avoids any race conditions between spawning the managed process and sending the
+  first request, since the listen socket is active the whole time.
 
 ```js
 const http = require('http')
