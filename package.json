@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/mojolicious/server-starter/issues"
   },
-  "homepage": "https://github.com/mojolicious/server-starter",
+  "homepage": "https://mojolicious.org",
   "scripts": {
     "lint": "eslint \"lib/*.js\" \"test/*.js\"",
     "test": "tap --no-coverage test/*.js",
