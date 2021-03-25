@@ -4,7 +4,7 @@ const t = require('tap')
 const fetch = require('node-fetch')
 const starter = require('..')
 
-t.test('Start and stop a server', async (t) => {
+t.test('Start and stop a server', async t => {
   const server = await starter.newServer()
   t.equal(server.pid(), null, 'not started')
   await server.launch('node', ['test/support/server.js'])
@@ -26,7 +26,7 @@ t.test('Start and stop a server', async (t) => {
   t.equal(err.errno, 'ECONNREFUSED', 'right error')
 })
 
-t.test('Do it again', async (t) => {
+t.test('Do it again', async t => {
   const server = await starter.newServer()
   t.equal(server.pid(), null, 'not started')
   await server.launch('node', ['test/support/server.js'])
