@@ -26,7 +26,7 @@ server.listen({ fd: 3 })
 
 ```js
 const starter = require('@mojolicious/server-starter')
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 
 (async () => {
   const server = await starter.newServer()
@@ -47,7 +47,7 @@ const fetch = require('node-fetch')
 ```js
 const t = require('tap')
 const starter = require('@mojolicious/server-starter')
-const { chromium } = require('playwright')
+const { chromium } = require('playwright');
 
 (async () => {
   const server = await starter.newServer()
