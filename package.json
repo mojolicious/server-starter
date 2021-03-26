@@ -1,6 +1,6 @@
 {
   "name": "@mojolicious/server-starter",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "UNIX superdaemon with support for socket activation",
   "keywords": [
     "superdaemon",
