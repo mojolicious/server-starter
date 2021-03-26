@@ -49,7 +49,7 @@ const t = require('tap');
 const starter = require('@mojolicious/server-starter');
 const { chromium } = require('playwright');
 
-(async () => {
+t.test('Test the WebSocket chat', async t => {
   const server = await starter.newServer();
   await server.launch('perl', ['chat.pl', 'daemon', '-l', 'http://*?fd=3']);
   const browser = await chromium.launch();
@@ -74,7 +74,7 @@ const { chromium } = require('playwright');
   await context.close();
   await browser.close();
   await server.close();
-})();
+});
 ```
 
 ## Install
