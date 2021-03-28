@@ -6,10 +6,11 @@ const starter = require('..');
 
 t.test('Start and stop a server', async t => {
   const server = await starter.newServer();
-  t.equal(server.pid(), null, 'not started');
+  t.equal(server.pid, null, 'not started');
   await server.launch('node', ['test/support/server.js']);
-  t.equal(typeof server.pid(), 'number', 'started');
+  t.equal(typeof server.pid, 'number', 'started');
   const url = server.url();
+  t.equal(typeof server.port, 'number', 'port assigned');
 
   const res = await fetch(url);
   t.equal(res.ok, true, '2xx code');
@@ -18,7 +19,7 @@ t.test('Start and stop a server', async t => {
   t.equal(buffer.toString('utf8'), 'Hello World!', 'right content');
 
   await server.close();
-  t.equal(server.pid(), null, 'stopped');
+  t.equal(server.pid, null, 'stopped');
 
   let err;
   try { await fetch(url); } catch (e) { err = e; }
@@ -28,9 +29,9 @@ t.test('Start and stop a server', async t => {
 
 t.test('Do it again', async t => {
   const server = await starter.newServer();
-  t.equal(server.pid(), null, 'not started');
+  t.equal(server.pid, null, 'not started');
   await server.launch('node', ['test/support/server.js']);
-  t.equal(typeof server.pid(), 'number', 'started');
+  t.equal(typeof server.pid, 'number', 'started');
 
   const res = await fetch(server.url());
   t.equal(res.ok, true, '2xx code');
@@ -39,5 +40,5 @@ t.test('Do it again', async t => {
   t.equal(buffer.toString('utf8'), 'Hello World!', 'right content');
 
   await server.close();
-  t.equal(server.pid(), null, 'stopped');
+  t.equal(server.pid, null, 'stopped');
 });
