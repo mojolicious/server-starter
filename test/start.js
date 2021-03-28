@@ -7,6 +7,7 @@ const starter = require('..');
 t.test('Start and stop a server', async t => {
   const server = await starter.newServer();
   t.equal(server.pid(), null, 'not started');
+  if (process.platform === 'win32') process.env.TEST_SERVER_STARTER_PORT = server.port;
   await server.launch('node', ['test/support/server.js']);
   t.equal(typeof server.pid(), 'number', 'started');
   const url = server.url();
@@ -29,6 +30,7 @@ t.test('Start and stop a server', async t => {
 t.test('Do it again', async t => {
   const server = await starter.newServer();
   t.equal(server.pid(), null, 'not started');
+  if (process.platform === 'win32') process.env.TEST_SERVER_STARTER_PORT = server.port;
   await server.launch('node', ['test/support/server.js']);
   t.equal(typeof server.pid(), 'number', 'started');
 

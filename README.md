@@ -8,7 +8,7 @@
   assigning random ports to avoid race conditions when there are many services running in parallel on the same machine.
   As is common with large scale testing.
   
-  The superdaemon will create the listen socket and pass it to the managed process as `fd3`, similar to how `systemd`
+  The superdaemon will create the listen socket and pass it to the managed process as `fd=3`, similar to how `systemd`
   handles socket activation. This also avoids any race conditions between spawning the managed process and sending the
   first request, since the listen socket is active the whole time.
 
