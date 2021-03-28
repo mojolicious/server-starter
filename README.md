@@ -8,7 +8,7 @@
   assigning random ports to avoid race conditions when there are many services running in parallel on the same machine.
   As is common with large scale testing.
   
-  The superdaemon will create the listen socket and pass it to the managed process as `fd3`, similar to how `systemd`
+  The superdaemon will create the listen socket and pass it to the managed process as `fd=3`, similar to how `systemd`
   handles socket activation. This also avoids any race conditions between spawning the managed process and sending the
   first request, since the listen socket is active the whole time.
 
@@ -42,7 +42,8 @@ const fetch = require('node-fetch');
 ```
 
   The managed TCP server does not need to be a Node application. In fact this module was originally developed to test
-  [Mojolicious](https://mojolicious.org) web applications written in Perl with [Playwright](https://playwright.dev).
+  [Mojolicious](https://mojolicious.org) web applications written in Perl with [Playwright](https://playwright.dev). For
+  more details take a look at the [blog post](https://dev.to/kraih/playwright-and-mojolicious-21hn).
 
 ```js
 const t = require('tap');
