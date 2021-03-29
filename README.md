@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
 server.listen({ fd: 3 });
 ```
 
-  All the web application has to do is use `fd3` as its listen socket to accept new connections from.
+  All the web application has to do is use `fd=3` as its listen socket to accept new connections from.
 
 ```js
 const starter = require('@mojolicious/server-starter');
