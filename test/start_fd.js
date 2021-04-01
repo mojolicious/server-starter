@@ -67,9 +67,8 @@ function getPort () {
     const srv = net.createServer();
     srv.on('error', reject);
     srv.listen(0, () => {
-      const port = srv.address().port;
+      resolve(srv.address().port);
       srv.close();
-      resolve(port);
     });
   });
 }
