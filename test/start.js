@@ -60,10 +60,10 @@ t.test('Slow server', async t => {
   t.equal(server.pid, null, 'stopped');
 });
 
-t.test('Slow server, with wrong (too small) timeout', {skip: !process.env.MOJO_SERVER_STARTER_AVOID_FDPASS && process.platform !== 'win32'}, async t => {
+t.test('Slow server, with wrong (too small) timeout', { skip: !process.env.MOJO_SERVER_STARTER_AVOID_FDPASS && process.platform !== 'win32' }, async t => {
   const server = await starter.newServer();
   t.equal(server.pid, null, 'not started');
-  await server.launch('node', ['test/support/server.js', server.listenAddress(), 1000], {connectTimeout: 500});
+  await server.launch('node', ['test/support/server.js', server.listenAddress(), 3000], { connectTimeout: 500 });
   t.equal(typeof server.pid, 'number', 'started');
 
   let err;
