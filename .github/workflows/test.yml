@@ -2,13 +2,14 @@ name: test
 on: [push, pull_request]
 jobs:
   test:
-    name: Node ${{ matrix.node-version }} and ${{ matrix.os }}
+    name: Node ${{ matrix.node-version }}, ${{ matrix.os }}, and avoid fdpass ${{ matrix.avoid-fdpass }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         node-version: [10.x, 12.x, 14.x, 15.x]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        avoid-fdpass: [0,1]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node ${{ matrix.node-version }}
@@ -19,5 +20,7 @@ jobs:
       run: npm i
     - name: npm test
       run: npm test
+      env:
+        MOJO_SERVER_STARTER_AVOID_FDPASS: ${{ matrix.avoid-fdpass }}
     - name: npm run lint
       run: npm run lint
