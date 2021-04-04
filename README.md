@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
 server.listen({ fd: 3 });
 ```
 
-  All the web application has to do is use `fd3` as its listen socket to accept new connections from.
+  All the web application has to do is use `fd=3` as its listen socket to accept new connections from.
 
 ```js
 const starter = require('@mojolicious/server-starter');
@@ -42,7 +42,8 @@ const fetch = require('node-fetch');
 ```
 
   The managed TCP server does not need to be a Node application. In fact this module was originally developed to test
-  [Mojolicious](https://mojolicious.org) web applications written in Perl with [Playwright](https://playwright.dev).
+  [Mojolicious](https://mojolicious.org) web applications written in Perl with [Playwright](https://playwright.dev). For
+  more details take a look at the [blog post](https://dev.to/kraih/playwright-and-mojolicious-21hn).
 
 ```js
 const t = require('tap');
