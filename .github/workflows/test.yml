@@ -2,7 +2,7 @@ name: test
 on: [push, pull_request]
 jobs:
   test:
-    name: Node ${{ matrix.node-version }}, ${{ matrix.os }}, and avoid fdpass ${{ matrix.avoid-fdpass }}
+    name: Node ${{ matrix.node-version }} and ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -19,7 +19,5 @@ jobs:
       run: npm i
     - name: npm test
       run: npm test
-      env:
-        MOJO_SERVER_STARTER_AVOID_FDPASS: ${{ matrix.avoid-fdpass }}
     - name: npm run lint
       run: npm run lint
