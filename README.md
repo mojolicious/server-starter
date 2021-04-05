@@ -136,7 +136,7 @@ Note that depending on the acttual command line your server application needs to
 ```
 ## Caveats
 
-- When ```avoidFdPassing``` mode is used with random port assignement (the default when you create your server with the createServer() function), a race condition is generated between the launched server and other potential processes asking for new random ports, because nothing prevents the operating system to reasign an already closed port to them.
+- When ```avoidFdPassing``` mode is used with random port assignement (the default when you create your server with the createServer() function), a race condition could be generated between the launched server and other potential processes asking for new random ports, because nothing prevents the operating system to reasign an already closed port to them.
 ## Install
 
     $ npm i @mojolicious/server-starter
