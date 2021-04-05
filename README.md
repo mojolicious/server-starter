@@ -150,7 +150,7 @@ This parameter has no effect when socket is passed through file descriptor (in t
 
 - Configurable retry time
 
-When not using fd passing, the launch() function will check if the server is listening every <retryTime> mS. You can configure it as an option:
+When not using fd passing, the launch() function will check if the server is listening every ```retryTime``` mS. You can configure it as an option:
 
 ```js
   const server = await starter.newServer();
