@@ -81,7 +81,7 @@ t.test('Test the WebSocket chat', async t => {
 ```
 ## Launching servers / platforms without file descriptor pass support.
 
-  This module can be used with standard listening address, for platforms not supporting
+  This module can be used with other ways to pass the listening address, for platforms not supporting
   file description passing (like windows), or servers that can't reuse sockets passed
   as file descriptors.
 
@@ -98,8 +98,7 @@ const server = http.createServer((req, res) => {
 // take the port value from the first command line argument (process.argv[2])
 server.listen({ port: process.argv[2] });
 ```
-
-To avoid passing the listen socket with a file descriptor, you also have to define option ```avoidFdPassing``` to true:
+To avoid passing the listen socket with a file descriptor, you have to define option ```avoidFdPassing``` to true:
 
 ```js
 const starter = require('@mojolicious/server-starter');
@@ -128,12 +127,16 @@ Note that depending on the acttual command line your server application needs to
   const server = await starter.newServer();
   await server.launch(<cmd>, <args>, { connectTimeout: 3000 });
 ```
+
 - ```retryTime```, in mS, allows to configure the time to retry a connection with the launched server. Default is 60 (60 mS).
 
 ```js
   const server = await starter.newServer();
   await server.launch(<cmd>, <args>, { retryTime: 250 });
 ```
+## Caveats
+
+- When ```avoidFdPassing``` mode is used with random port assignement (the default when you create your server with the createServer() function), a race conditions exist between the launched server and other potential processes because nothing prevents the operating system to reasign an already closed port to them.
 ## Install
 
     $ npm i @mojolicious/server-starter
