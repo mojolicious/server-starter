@@ -81,84 +81,61 @@ t.test('Test the WebSocket chat', async t => {
 ```
 ## Launching servers / platforms without file descriptor pass support.
 
-  This module can be used with standard listening address, for platforms not supporting
+  This module can be used with other ways to pass the listening address, for platforms not supporting
   file description passing (like windows), or servers that can't reuse sockets passed
   as file descriptors.
-  
-- Portable listening address
 
-  You can build a portable listening address using the ```listenAddress()``` function on ```server``` object. That function will return an absolute url that you can use to configure your server in a portable way.
-  
-  It will either be the string ```http://*?fd=3``` if file description pass is
-  allowed, or have a format ```http://<address>:<port>``` that you can use as a listening address or parse it to get the parameters needed by your server (address and port).
+  Note that when using this option the module does not avoid the race condition mentioned in the [Description](#description) paragraph. The option exists just because it would allow your colaborators to be able to run your tests in Windows platforms without needing to switch to WSL.
 
-  - on your test script:
+  Just as an example, suppose you have a simple js server that will listen in a port passed as a parameter:
+
 ```js
-...
-  const server = await starter.newServer();
-  await server.launch('node', ['your/path/server.js', server.listenAdress]);
-...
-```
-
-  - then on your server (```your/path/server.js``` file) you will get the listenAdress as a command parameter:
-```js
-// called as node server.js <listening address>
-
+// called as node server.js <port>
 const http = require('http');
-let listen = {fd: 3};
-let parts = process.argv[2].match(/http:\/\/([^\/]+):(\d+)/);
-if (parts) listen = {port: parts[2], address: parts[1]};
-// at this point variable listen will either be {fd: 3} or {port: <port>, address: <address>},
-// dependint on the first command argument (process.argv[2])
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Hello World!');
 });
-server.listen(listen);
+// take the port value from the first command line argument (process.argv[2])
+server.listen({ port: process.argv[2] });
 ```
-Note that depending on the server application required format, listenAddress() string could be exactly all you need, like in the case of a Mojolicious app, to load it in a portable way you just use the returned string as the '-l' command argument:
+To avoid passing the listen socket with a file descriptor, you have to define option ```avoidFdPassing``` to true:
 
 ```js
-...
+const starter = require('@mojolicious/server-starter');
+const fetch = require('node-fetch');
+
+(async () => {
   const server = await starter.newServer();
-  await server.launch('perl', ['your/path/app.pl', '-l', server.listenAdress]);
-...
+  await server.launch('node', ['server.js', server.port], { avoidFdPassing: true });
+  const url = server.url();
+
+  const res = await fetch(url);
+  const buffer = await res.buffer();
+  console.log(buffer.toString('utf8'));
+
+  await server.close();
 ```
 
-- Avoid usage of file description passing of listening socket
+Note that depending on the acttual command line your server application needs to be started, either ```server.url()``` returned string or ```server.port``` could be exactly all you need to configure as a parameter when calling the ```launch``` function.
+## Configurable timers
 
-You can use the ENV variable ```MOJO_SERVER_STARTER_AVOID_FDPASS```:
+```launch()``` promise will not resolve until it can be verified that the launched server is actually listening. This behavior is controlled by two timers:
 
-```shell
-export MOJO_SERVER_STARTER_AVOID_FDPASS=1
-```
-
-Default value is 0, and will use fd passing whenever is possible (i.e. except for windows platforms)
-
-- Configurable timeout
-
-When not using fd passing, there is a timeout to wait for the server to start listening. You configure it as option ```connectTimeout```, in mS, when calling the launch() function:
-
-```js
-  const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, {connectTimeout: 3000});
-```
-
-Default value is 30000 (30 secs).
-This parameter has no effect when socket is passed through file descriptor (in that case waiting for the server is not necessary)
-
-- Configurable retry time
-
-When not using fd passing, the launch() function will check if the server is listening every <retryTime> mS. You can configure it as an option:
+- ```connectTimeout```, in mS, allows to configure maximum time to wait for the launched server to start listening. Default is 30000 (30 secs).
 
 ```js
   const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, {retryTime: 250});
+  await server.launch(<cmd>, <args>, { connectTimeout: 3000 });
 ```
-Default value is 60 (60 mS).
-This parameter has no effect when socket is passed through file descriptor (in that case waiting for the server is not necessary)
 
+- ```retryTime```, in mS, allows to configure the time to retry a connection with the launched server. Default is 60 (60 mS).
+
+```js
+  const server = await starter.newServer();
+  await server.launch(<cmd>, <args>, { retryTime: 250 });
+```
 ## Install
 
     $ npm i @mojolicious/server-starter
