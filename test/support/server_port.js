@@ -3,7 +3,7 @@
 // Usage: node server_port.js <port number> <listen delay (mS)>
 // <port number> is mandatory
 
-const http = require('http'); 
+const http = require('http');
 const delay = process.argv[3] ? process.argv[3] : 0;
 
 const server = http.createServer((req, res) => {
