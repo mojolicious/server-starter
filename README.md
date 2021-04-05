@@ -88,7 +88,6 @@ t.test('Test the WebSocket chat', async t => {
   Just as an example, suppose you have a simple js server that will listen in a port passed as a parameter:
 
 ```js
-
 // called as node server.js <port>
 const http = require('http');
 
@@ -118,36 +117,23 @@ const fetch = require('node-fetch');
   await server.close();
 ```
 
-Note that depending on the server application required format, server.url() returned string could be exactly all you need, like in the case of a Mojolicious app, you can just use the returned string as the '-l' command argument:
+Note that depending on the acttual command line your server application needs to be started, either ```server.url()``` returned string or ```server.port``` could be exactly all you need to configure as a parameter when calling the ```launch``` function.
+## Configurable timers
 
-```js
-...
-  const server = await starter.newServer();
-  await server.launch('perl', ['your/path/app.pl', '-l', server.url()]);
-...
-```
+```launch()``` promise will not resolve until it can be verified that the launched server is actually listening. This behavior is controlled by two timers:
 
-- Configurable timeout
-
-When not using fd passing, there is a timeout to wait for the server to start listening. You can configure it with the option ```connectTimeout```, in mS, when calling the launch() function:
+- ```connectTimeout```, in mS, allows to configure maximum time to wait for the launched server to start listening. Default is 30000 (30 secs).
 
 ```js
   const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, { avoidFdPassing: true, connectTimeout: 3000 });
+  await server.launch(<cmd>, <args>, { connectTimeout: 3000 });
 ```
-
-Default value is 30000 (30 secs).
-
-- Configurable retry time
-
-When not using fd passing, the launch() function will check if the server is listening every ```retryTime``` mS. You can configure it as an option:
+- ```retryTime```, in mS, allows to configure the time to retry a connection with the launched server. Default is 60 (60 mS).
 
 ```js
   const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, { avoidFdPassion: true, retryTime: 250 });
+  await server.launch(<cmd>, <args>, { retryTime: 250 });
 ```
-Default value is 60 (60 mS).
-
 ## Install
 
     $ npm i @mojolicious/server-starter
