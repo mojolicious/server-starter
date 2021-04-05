@@ -85,6 +85,8 @@ t.test('Test the WebSocket chat', async t => {
   file description passing (like windows), or servers that can't reuse sockets passed
   as file descriptors.
 
+  Note that when using this option the module does not avoid the race condition mentioned in the [Description](#description) paragraph. The option exists just because it would allow your colaborators to be able to run your tests in Windows platforms without needing to switch to WSL.
+
   Just as an example, suppose you have a simple js server that will listen in a port passed as a parameter:
 
 ```js
@@ -134,9 +136,6 @@ Note that depending on the acttual command line your server application needs to
   const server = await starter.newServer();
   await server.launch(<cmd>, <args>, { retryTime: 250 });
 ```
-## Caveats
-
-- When ```avoidFdPassing``` mode is used with random port assignement (the default when you create your server with the createServer() function), a race condition could be generated between the launched server and other potential processes asking for new random ports, because nothing prevents the operating system to reasign an already closed port to them.
 ## Install
 
     $ npm i @mojolicious/server-starter
