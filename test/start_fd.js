@@ -5,6 +5,8 @@ const fetch = require('node-fetch');
 const net = require('net');
 const starter = require('..');
 
+if (process.platform === 'win32') t.grep = [/Not to run on win32/]; // skip tests on win32
+
 t.test('Start and stop a server', async t => {
   const server = await starter.newServer();
   t.equal(server.pid, null, 'not started');
