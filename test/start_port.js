@@ -69,6 +69,7 @@ t.test('Slow server, with wrong (too small) timeout', async t => {
     await server.launchPortable('node', ['test/support/server_port.js', server.port, 3000], { connectTimeout: 500 });
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
+  t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable error');
 
   t.equal(typeof server.pid, 'number', 'started');
 
@@ -79,6 +80,49 @@ t.test('Slow server, with wrong (too small) timeout', async t => {
 
   await server.close();
   t.equal(server.pid, null, 'stopped');
+});
+
+t.test('Failed server, (non existent script)', async t => {
+  const server = await starter.newServer();
+  t.equal(server.pid, null, 'not started');
+
+  let launchErr;
+  let emittedErr;
+  server.on('stderr', (e) => { emittedErr = e; });
+  try {
+    await server.launchPortable('node', ['test/support/server_nonexistent.js'], { connectTimeout: 500, stderr: false });
+  } catch (e) { launchErr = e; }
+  t.ok(launchErr, 'request failed');
+  t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
+  t.match(emittedErr.toString(), /Error: Cannot find module/, 'right emmited error');
+  let fetchErr;
+  try { await fetch(server.url()); } catch (e) { fetchErr = e; }
+  t.ok(fetchErr, 'request failed');
+  t.equal(fetchErr.errno, 'ECONNREFUSED', 'right error');
+
+  t.equal(server.pid, null, 'did not start');
+});
+
+t.test('Failed server, (connection error on script)', async t => {
+  const server = await starter.newServer();
+  t.equal(server.pid, null, 'not started');
+
+  let launchErr;
+  let emittedErr;
+  server.on('stderr', (e) => { emittedErr = e; });
+  try {
+    await server.launchPortable('node', ['test/support/server_port.js', -1], { connectTimeout: 500, stderr: false });
+  } catch (e) { launchErr = e; }
+  t.ok(launchErr, 'request failed');
+  t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
+  t.match(emittedErr.toString(), /ERR_SOCKET_BAD_PORT/, 'right emmited error');
+
+  let fetchErr;
+  try { await fetch(server.url()); } catch (e) { fetchErr = e; }
+  t.ok(fetchErr, 'request failed');
+  t.equal(fetchErr.errno, 'ECONNREFUSED', 'right error');
+
+  t.equal(server.pid, null, 'did not start');
 });
 
 t.test('Use a specific port', async t => {
