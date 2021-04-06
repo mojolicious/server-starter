@@ -12,7 +12,7 @@
   handles socket activation. This also avoids any race conditions between spawning the managed process and sending the
   first request, since the listen socket is active the whole time.
 
-  For Windows platforms, read also ```Launching servers / platforms without file descriptor pass support``` below.
+  For Windows platforms, read also [Launching servers / platforms without file descriptor pass support](#Launching-servers-without-file-descriptor-pass-support) below.
 
 ```js
 const http = require('http');
@@ -79,7 +79,7 @@ t.test('Test the WebSocket chat', async t => {
   await server.close();
 });
 ```
-## Launching servers / platforms without file descriptor pass support.
+## Launching servers without file descriptor pass support
 
   This module can be used with other ways to pass the listening address, for platforms not supporting
   file description passing (like windows), or servers that can't reuse sockets passed
