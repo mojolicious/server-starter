@@ -115,10 +115,12 @@ t.test('Failed server, (connection error on script)', async t => {
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
   t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
-  // unfortunatelly, node 10.x bad port error in windows is very nonspecific
+  // unfortunatelly, node 10.x ERR_SOCKET_BAD_PORT content seems to be broken on windows,
+  // also been nonspecific, so checks in that particular case we check for any string
+  // received on stderr
   const badPortErrMsg = process.platform === 'win32' &&
     process.versions.node.split('.')[0] === '10'
-    ? /^\.processTimers /
+    ? /\w/
     : /ERR_SOCKET_BAD_PORT/;
   t.match(emittedErr.toString(), new RegExp(badPortErrMsg), 'right emmited error');
 
