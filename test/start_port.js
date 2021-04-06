@@ -94,7 +94,7 @@ t.test('Failed server, (non existent script)', async t => {
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
   t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
-  t.match(emittedErr.toString(), /Error: Cannot find module/, 'right emmited error');
+  t.match(emittedErr.toString(), /: Cannot find module/, 'right emmited error');
   let fetchErr;
   try { await fetch(server.url()); } catch (e) { fetchErr = e; }
   t.ok(fetchErr, 'request failed');
