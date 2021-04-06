@@ -100,7 +100,7 @@ const server = http.createServer((req, res) => {
 // take the port value from the first command line argument (process.argv[2])
 server.listen({ port: process.argv[2] });
 ```
-To avoid passing the listen socket with a file descriptor, you have to define option ```avoidFdPassing``` to true:
+To avoid passing the listen socket with a file descriptor, you have to launch your server using the ```launchPortable()``` function:
 
 ```js
 const starter = require('@mojolicious/server-starter');
@@ -108,7 +108,7 @@ const fetch = require('node-fetch');
 
 (async () => {
   const server = await starter.newServer();
-  await server.launch('node', ['server.js', server.port], { avoidFdPassing: true });
+  await server.launchPortable('node', ['server.js', server.port]);
   const url = server.url();
 
   const res = await fetch(url);
@@ -118,23 +118,23 @@ const fetch = require('node-fetch');
   await server.close();
 ```
 
-Note that depending on the acttual command line your server application needs to be started, either ```server.url()``` returned string or ```server.port``` could be exactly all you need to configure as a parameter when calling the ```launch``` function.
+Note that depending on the acttual command line your server application needs to be started, either ```server.url()``` returned string or ```server.port``` could be exactly all you need to configure as a parameter when calling the ```launchPortable()``` function.
 ## Configurable timers
 
-```launch()``` promise will not resolve until it can be verified that the launched server is actually listening. This behavior is controlled by two timers:
+```launchPortable()``` promise will not resolve until it can be verified that the launched server is actually listening. This behavior is controlled by two timers:
 
 - ```connectTimeout```, in mS, allows to configure maximum time to wait for the launched server to start listening. Default is 30000 (30 secs).
 
 ```js
   const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, { connectTimeout: 3000 });
+  await server.launchPortable(<cmd>, <args>, { connectTimeout: 3000 });
 ```
 
 - ```retryTime```, in mS, allows to configure the time to retry a connection with the launched server. Default is 60 (60 mS).
 
 ```js
   const server = await starter.newServer();
-  await server.launch(<cmd>, <args>, { retryTime: 250 });
+  await server.launchPortable(<cmd>, <args>, { retryTime: 250 });
 ```
 ## Install
 

@@ -8,7 +8,7 @@ const starter = require('..');
 t.test('Start and stop a server', async t => {
   const server = await starter.newServer();
   t.equal(server.pid, null, 'not started');
-  await server.launch('node', ['test/support/server_port.js', server.port], { avoidFdPassing: true });
+  await server.launchPortable('node', ['test/support/server_port.js', server.port]);
   t.equal(typeof server.pid, 'number', 'started');
   const url = server.url();
   t.equal(typeof server.port, 'number', 'port assigned');
@@ -31,7 +31,7 @@ t.test('Start and stop a server', async t => {
 t.test('Do it again', async t => {
   const server = await starter.newServer();
   t.equal(server.pid, null, 'not started');
-  await server.launch('node', ['test/support/server_port.js', server.port], { avoidFdPassing: true });
+  await server.launchPortable('node', ['test/support/server_port.js', server.port]);
   t.equal(typeof server.pid, 'number', 'started');
 
   const res = await fetch(server.url());
@@ -47,7 +47,7 @@ t.test('Do it again', async t => {
 t.test('Slow server', async t => {
   const server = await starter.newServer();
   t.equal(server.pid, null, 'not started');
-  await server.launch('node', ['test/support/server_port.js', server.port, 1000], { avoidFdPassing: true });
+  await server.launchPortable('node', ['test/support/server_port.js', server.port, 1000]);
   t.equal(typeof server.pid, 'number', 'started');
 
   const res = await fetch(server.url());
@@ -66,7 +66,7 @@ t.test('Slow server, with wrong (too small) timeout', async t => {
 
   let launchErr;
   try {
-    await server.launch('node', ['test/support/server_port.js', server.port, 3000], { connectTimeout: 500, avoidFdPassing: true });
+    await server.launchPortable('node', ['test/support/server_port.js', server.port, 3000], { connectTimeout: 500 });
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
 
@@ -85,7 +85,7 @@ t.test('Use a specific port', async t => {
   const port = await getPort();
   const server = await starter.newServer(port);
   t.equal(server.pid, null, 'not started');
-  await server.launch('node', ['test/support/server_port.js', server.port], { avoidFdPassing: true });
+  await server.launchPortable('node', ['test/support/server_port.js', server.port]);
   t.equal(typeof server.pid, 'number', 'started');
   t.equal(server.port, port, 'right port');
 
