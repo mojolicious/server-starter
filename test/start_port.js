@@ -94,7 +94,14 @@ t.test('Failed server, (non existent script)', async t => {
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
   t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
-  t.match(emittedErr.toString(), /: Cannot find module/, 'right emmited error');
+
+  // skip windows node 10.x stderr tests, as seem to be broken
+  t.match(
+    emittedErr.toString(),
+    /Error: Cannot find module/,
+    'right emmited error',
+    { skip: process.platform === 'win32' && process.versions.node.split('.')[0] === '10' }
+  );
   let fetchErr;
   try { await fetch(server.url()); } catch (e) { fetchErr = e; }
   t.ok(fetchErr, 'request failed');
@@ -115,14 +122,14 @@ t.test('Failed server, (connection error on script)', async t => {
   } catch (e) { launchErr = e; }
   t.ok(launchErr, 'request failed');
   t.equal(launchErr.code, 'ECONNREFUSED', 'launchPortable timeout error');
-  // unfortunatelly, node 10.x ERR_SOCKET_BAD_PORT content seems to be broken on windows,
-  // also been nonspecific, so checks in that particular case we check for any string
-  // received on stderr
-  const badPortErrMsg = process.platform === 'win32' &&
-    process.versions.node.split('.')[0] === '10'
-    ? /\w/
-    : /ERR_SOCKET_BAD_PORT/;
-  t.match(emittedErr.toString(), new RegExp(badPortErrMsg), 'right emmited error');
+
+  // skip windows node 10.x stderr tests, as seem to be broken
+  t.match(
+    emittedErr.toString(),
+    /ERR_SOCKET_BAD_PORT/,
+    'right emmited error',
+    { skip: process.platform === 'win32' && process.versions.node.split('.')[0] === '10' }
+  );
 
   let fetchErr;
   try { await fetch(server.url()); } catch (e) { fetchErr = e; }
