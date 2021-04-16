@@ -1,6 +1,6 @@
 {
   "name": "@mojolicious/server-starter",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "UNIX superdaemon with support for socket activation",
   "keywords": [
     "superdaemon",
@@ -26,10 +26,6 @@
     "diff": "^5.0.0",
     "eslint": "^7.22.0",
     "eslint-config-semistandard": "^15.0.1",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
     "node-fetch": "^2.6.1",
     "tap": "^14.11.0"
   },
