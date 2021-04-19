@@ -15,6 +15,10 @@
       {
         "code": 120
       }
+    ],
+    "object-curly-spacing": [
+      "error",
+      "never"
     ]
   }
 }
