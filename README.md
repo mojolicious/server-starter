@@ -16,10 +16,10 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Hello World!');
 });
-server.listen({ fd: 3 });
+server.listen({fd: 3});
 ```
 
   All the web application has to do is use `fd=3` as its listen socket to accept new connections from.
@@ -48,7 +48,7 @@ const fetch = require('node-fetch');
 ```js
 const t = require('tap');
 const starter = require('@mojolicious/server-starter');
-const { chromium } = require('playwright');
+const {chromium} = require('playwright');
 
 t.test('Test the WebSocket chat', async t => {
   const server = await starter.newServer();
