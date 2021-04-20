@@ -17,9 +17,8 @@
   },
   "homepage": "https://mojolicious.org",
   "scripts": {
-    "lint": "eslint \"lib/*.js\" \"test/*.js\"",
-    "test": "tap --no-coverage test/*.js",
-    "test-cov": "tap test/*.js"
+    "lint": "eslint \"lib/*.js\" \"test/*.js\" \"test/**/*.js\"",
+    "test": "tap --no-coverage test/*.js"
   },
   "main": "./lib/server-starter.js",
   "devDependencies": {
