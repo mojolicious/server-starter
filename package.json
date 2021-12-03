@@ -18,6 +18,9 @@
   "homepage": "https://mojolicious.org",
   "scripts": {
     "lint": "eslint \"lib/*.js\" \"test/*.js\" \"test/**/*.js\"",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
     "test": "tap --no-coverage test/*.js"
   },
   "type": "module",
