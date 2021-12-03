@@ -1,68 +1,74 @@
-'use strict';
-
-const t = require('tap');
-const fetch = require('node-fetch');
-const net = require('net');
-const starter = require('..');
+import net from 'net';
+import ServerStarter from '../lib/server-starter.js';
+import {UserAgent} from '@mojojs/core';
+import t from 'tap';
 
 t.test('Start and stop a server', async t => {
-  const server = await starter.newServer();
-  t.equal(server.pid, null, 'not started');
+  const server = await ServerStarter.newServer();
+  t.equal(server.pid, null);
   await server.launch('node', ['test/support/server_fd.js']);
-  t.equal(typeof server.pid, 'number', 'started');
+  t.equal(typeof server.pid, 'number');
   const url = server.url();
-  t.equal(typeof server.port, 'number', 'port assigned');
+  t.equal(typeof server.port, 'number');
+  const ua = new UserAgent({baseUrl: url});
 
-  const res = await fetch(url);
-  t.equal(res.ok, true, '2xx code');
-  t.equal(res.headers.get('Content-Type'), 'text/plain', 'right "Content-Type" header');
-  const buffer = await res.buffer();
-  t.equal(buffer.toString('utf8'), 'Hello World!', 'right content');
+  const res = await ua.get('/');
+  t.equal(res.isSuccess, true);
+  t.equal(res.get('Content-Type'), 'text/plain');
+  t.equal(await res.text(), 'Hello World!');
+
+  const res2 = await ua.get('/');
+  t.equal(res2.isSuccess, true);
+  t.equal(res2.get('Content-Type'), 'text/plain');
+  t.equal(await res2.text(), 'Hello World!');
 
   await server.close();
-  t.equal(server.pid, null, 'stopped');
+  t.equal(server.pid, null);
 
   let err;
-  try { await fetch(url); } catch (e) { err = e; }
-  t.ok(err, 'request failed');
-  t.equal(err.errno, 'ECONNREFUSED', 'right error');
+  try {
+    await ua.get('/');
+  } catch (e) {
+    err = e;
+  }
+  t.ok(err);
 });
 
 t.test('Do it again', async t => {
-  const server = await starter.newServer();
-  t.equal(server.pid, null, 'not started');
+  const server = await ServerStarter.newServer();
+  t.equal(server.pid, null);
   await server.launch('node', ['test/support/server_fd.js']);
-  t.equal(typeof server.pid, 'number', 'started');
+  t.equal(typeof server.pid, 'number');
+  const ua = new UserAgent({baseUrl: server.url()});
 
-  const res = await fetch(server.url());
-  t.equal(res.ok, true, '2xx code');
-  t.equal(res.headers.get('Content-Type'), 'text/plain', 'right "Content-Type" header');
-  const buffer = await res.buffer();
-  t.equal(buffer.toString('utf8'), 'Hello World!', 'right content');
+  const res = await ua.get('/');
+  t.equal(res.isSuccess, true);
+  t.equal(res.get('Content-Type'), 'text/plain');
+  t.equal(await res.text(), 'Hello World!');
 
   await server.close();
-  t.equal(server.pid, null, 'stopped');
+  t.equal(server.pid, null);
 });
 
 t.test('Use a specific port', async t => {
   const port = await getPort();
-  const server = await starter.newServer(port);
-  t.equal(server.pid, null, 'not started');
+  const server = await ServerStarter.newServer(port);
+  t.equal(server.pid, null);
   await server.launch('node', ['test/support/server_fd.js']);
-  t.equal(typeof server.pid, 'number', 'started');
-  t.equal(server.port, port, 'right port');
+  t.equal(typeof server.pid, 'number');
+  t.equal(server.port, port);
+  const ua = new UserAgent({baseUrl: server.url()});
 
-  const res = await fetch(server.url());
-  t.equal(res.ok, true, '2xx code');
-  t.equal(res.headers.get('Content-Type'), 'text/plain', 'right "Content-Type" header');
-  const buffer = await res.buffer();
-  t.equal(buffer.toString('utf8'), 'Hello World!', 'right content');
+  const res = await ua.get('/');
+  t.equal(res.isSuccess, true);
+  t.equal(res.get('Content-Type'), 'text/plain');
+  t.equal(await res.text(), 'Hello World!');
 
   await server.close();
-  t.equal(server.pid, null, 'stopped');
+  t.equal(server.pid, null);
 });
 
-function getPort () {
+function getPort() {
   return new Promise((resolve, reject) => {
     const srv = net.createServer();
     srv.on('error', reject);

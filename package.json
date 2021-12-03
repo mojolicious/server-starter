@@ -20,17 +20,17 @@
     "lint": "eslint \"lib/*.js\" \"test/*.js\" \"test/**/*.js\"",
     "test": "tap --no-coverage test/*.js"
   },
+  "type": "module",
   "main": "./lib/server-starter.js",
   "devDependencies": {
-    "diff": "^5.0.0",
-    "eslint": "^7.22.0",
-    "eslint-config-semistandard": "^15.0.1",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
+    "@mojojs/core": "^0.9.1",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "node-fetch": "^2.6.1",
-    "tap": "^14.11.0"
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "2.5.0",
+    "tap": "^15.1.5"
   },
   "engines": {
     "node": ">= 10"

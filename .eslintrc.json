@@ -3,22 +3,23 @@
     "node": true,
     "es2021": true
   },
-  "extends": [
-    "semistandard"
-  ],
   "parserOptions": {
-    "ecmaVersion": 12
+    "sourceType": "module"
   },
+  "extends": ["eslint:recommended", "prettier"],
+  "plugins": ["import", "prettier"],
   "rules": {
-    "max-len": [
+    "prettier/prettier": "error",
+    "import/order": [
       "error",
       {
-        "code": 120
+        "groups": ["type", "builtin", ["sibling", "parent"], "index", "object"],
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
-    ],
-    "object-curly-spacing": [
-      "error",
-      "never"
     ]
   }
 }
