@@ -13,7 +13,7 @@
   first request, since the listen socket is active the whole time.
 
 ```js
-const http = require('http');
+import http from 'http';
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -25,20 +25,18 @@ server.listen({fd: 3});
   All the web application has to do is use `fd=3` as its listen socket to accept new connections from.
 
 ```js
-const starter = require('@mojolicious/server-starter');
-const fetch = require('node-fetch');
+import ServerStarter from '@mojolicious/server-starter';
+import fetch from 'node-fetch';
 
-(async () => {
-  const server = await starter.newServer();
-  await server.launch('node', ['server.js']);
-  const url = server.url();
+const server = await starter.newServer();
+await server.launch('node', ['server.js']);
+const url = server.url();
 
-  const res = await fetch(url);
-  const buffer = await res.buffer();
-  console.log(buffer.toString('utf8'));
+const res = await fetch(url);
+const buffer = await res.buffer();
+console.log(buffer.toString('utf8'));
 
-  await server.close();
-})();
+await server.close();
 ```
 
   The managed TCP server does not need to be a Node application. In fact this module was originally developed to test
@@ -46,12 +44,12 @@ const fetch = require('node-fetch');
   more details take a look at the [blog post](https://dev.to/kraih/playwright-and-mojolicious-21hn).
 
 ```js
-const t = require('tap');
-const starter = require('@mojolicious/server-starter');
-const {chromium} = require('playwright');
+import t from 'tap';
+import ServerStarter from '@mojolicious/server-starter';
+import {chromium} from 'playwright';
 
 t.test('Test the WebSocket chat', async t => {
-  const server = await starter.newServer();
+  const server = await ServerStarter.newServer();
   await server.launch('perl', ['chat.pl', 'daemon', '-l', 'http://*?fd=3']);
   const browser = await chromium.launch();
   const context = await browser.newContext();
