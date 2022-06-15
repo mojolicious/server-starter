@@ -78,3 +78,18 @@ function getPort() {
     });
   });
 }
+
+t.test('Set env', async t => {
+  const server = await ServerStarter.newServer();
+  t.equal(server.pid, null);
+  await server.launch('node', ['test/support/server_fd.js'], {env: {...process.env, test: 'value'}});
+  t.equal(typeof server.pid, 'number');
+  const ua = new UserAgent({baseURL: server.url()});
+
+  const res = await ua.get('/');
+  t.equal(res.isSuccess, true);
+  t.equal(JSON.parse(res.get('X-Env')).test, 'value');
+
+  await server.close();
+  t.equal(server.pid, null);
+});
