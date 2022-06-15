@@ -10,7 +10,7 @@ t.test('Start and stop a server', async t => {
   t.equal(typeof server.pid, 'number');
   const url = server.url();
   t.equal(typeof server.port, 'number');
-  const ua = new UserAgent({baseUrl: url});
+  const ua = new UserAgent({baseURL: url});
 
   const res = await ua.get('/');
   t.equal(res.isSuccess, true);
@@ -39,7 +39,7 @@ t.test('Do it again', async t => {
   t.equal(server.pid, null);
   await server.launch('node', ['test/support/server_fd.js']);
   t.equal(typeof server.pid, 'number');
-  const ua = new UserAgent({baseUrl: server.url()});
+  const ua = new UserAgent({baseURL: server.url()});
 
   const res = await ua.get('/');
   t.equal(res.isSuccess, true);
@@ -57,7 +57,7 @@ t.test('Use a specific port', async t => {
   await server.launch('node', ['test/support/server_fd.js']);
   t.equal(typeof server.pid, 'number');
   t.equal(server.port, port);
-  const ua = new UserAgent({baseUrl: server.url()});
+  const ua = new UserAgent({baseURL: server.url()});
 
   const res = await ua.get('/');
   t.equal(res.isSuccess, true);
