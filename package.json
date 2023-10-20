@@ -17,28 +17,28 @@
   },
   "homepage": "https://mojolicious.org",
   "scripts": {
-    "coverage": "c8 tap --no-coverage test/*.js",
+    "coverage": "c8 tap --disable-coverage --allow-empty-coverage test/*.js",
     "lint": "eslint \"lib/*.js\" \"test/*.js\" \"test/**/*.js\"",
     "publish:major": "npm version major && npm publish",
     "publish:minor": "npm version minor && npm publish",
     "publish:patch": "npm version patch && npm publish",
-    "test": "tap --no-coverage test/*.js"
+    "test": "tap --disable-coverage --allow-empty-coverage test/*.js"
   },
   "type": "module",
   "main": "./lib/server-starter.js",
   "devDependencies": {
-    "@mojojs/core": "^0.36.0",
-    "c8": "^7.11.3",
+    "@mojojs/core": "^1.25.0",
+    "c8": "^8.0.0",
     "eslint": "^8.1.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "2.7.0",
-    "tap": "^16.2.0"
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0",
+    "tap": "^18.5.0"
   },
   "engines": {
-    "node": ">= 16"
+    "node": ">= 18"
   },
   "os": [
     "!win32"
