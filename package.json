@@ -28,7 +28,7 @@
   "main": "./lib/server-starter.js",
   "devDependencies": {
     "@mojojs/core": "^1.25.0",
-    "c8": "^8.0.0",
+    "c8": "^10.1.2",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.23.4",
