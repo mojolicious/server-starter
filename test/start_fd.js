@@ -93,3 +93,44 @@ t.test('Set env', async t => {
   await server.close();
   t.equal(server.pid, null);
 });
+
+t.test('Use additional fd', async t => {
+  const server = await ServerStarter.newServer();
+  t.equal(server.pid, null);
+
+  const ln = await getListener();
+
+  await server.launch('node', ['test/support/server_fd.js', '-additional-fd'], {fds: [ln.fd]});
+  t.equal(typeof server.pid, 'number');
+
+  await new Promise(resolve => ln.srv.close(resolve));
+
+  const ua = new UserAgent({baseURL: server.url()});
+  const res = await ua.get('/');
+  t.equal(res.isSuccess, true);
+  t.equal(res.get('Content-Type'), 'text/plain');
+  t.equal(await res.text(), 'Hello World!');
+
+  const ua2 = new UserAgent({baseURL: `http://127.0.0.1:${ln.port}`});
+  const res2 = await ua2.get('/');
+  t.equal(res2.isSuccess, true);
+  t.equal(res2.get('Content-Type'), 'text/plain');
+  t.equal(await res2.text(), 'Hello again World!');
+
+  await server.close();
+  t.equal(server.pid, null);
+});
+
+function getListener() {
+  return new Promise((resolve, reject) => {
+    const srv = net.createServer();
+    srv.on('error', reject);
+    srv.listen(0, () => {
+      resolve({
+        fd: srv._handle.fd,
+        port: srv.address().port,
+        srv: srv
+      });
+    });
+  });
+}
