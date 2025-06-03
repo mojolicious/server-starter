@@ -3,6 +3,12 @@
 
 This package strictly follows [Semantic Versioning](https://semver.org).
 
+## v2.2.0 (2025-06-02)
+
+### Features
+
+  * Added support for passing additional file descriptors. ([@horgh](https://github.com/horgh))
+
 ## v2.1.0 (2022-06-15)
 
 ### Features
